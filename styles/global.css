@@ -1,0 +1,32 @@
+/* styles/global.css */
+
+/* Importe la police */
+@font-face {
+  font-family: 'Mulish';
+  src: url('/fonts/Mulish-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Applique la nouvelle police au corps du document */
+body {
+  font-family: 'Mulish', sans-serif;
+  background-color: #f4f4f4b9;
+  color: #333;
+  margin: 0; /* Ajout pour réinitialiser les marges du corps du document */
+}
+
+/* Styles pour les boutons */
+button {
+  padding: 8px 16px;
+  border: none; /* Suppression de la bordure pour un look plus épuré */
+  background-color: #5f5d5d; /* Couleur du bouton normale */
+  color: #fff; /* Couleur du texte du bouton */
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #857e7e; /* Couleur du bouton au survol */
+}
+
+/* Autres styles... */
