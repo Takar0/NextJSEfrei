@@ -6,21 +6,23 @@ export default async function handler(
   response: NextApiResponse,
 ) {
   try {
-    // Changez les noms des variables pour refléter les données d'événement
-    const eventName = request.query.eventName as string;
-    const eventOwner = request.query.eventOwner as string;
+    // Récupérer les données à partir des paramètres de requête ou du corps de la requête
+    const { name, owner, eventDate, description } = request.method === 'POST' ? request.body : request.query;
 
-    // Vérifiez que les deux paramètres requis sont présents
-    if (!eventName || !eventOwner) throw new Error('Event name and owner names required');
+    // Vérifier que toutes les données requises sont présentes
+    if (!name || !owner || !eventDate) throw new Error('Event name, owner, and event date are required');
 
-    // Insérez dans la table Events au lieu de Pets
-    await sql`INSERT INTO Events (Name, Owner) VALUES (${eventName}, ${eventOwner});`;
+    // Insérer le nouvel événement dans la base de données
+    const result = await sql`
+      INSERT INTO Events (Name, Owner, EventDate, Description)
+      VALUES (${name}, ${owner}, ${eventDate}, ${description})
+      RETURNING *; // Retourner l'événement inséré
+    `;
 
-    // Sélectionnez et retournez la liste mise à jour des événements
-    const events = await sql`SELECT * FROM Events;`;
-    return response.status(200).json({ events });
+    // Retourner la réponse avec le nouvel événement inséré
+    return response.status(201).json({ event: result });
   } catch (error) {
-    // Gérez les erreurs en retournant une réponse appropriée
+    // Gérer les erreurs et les retourner en réponse
     console.error(error);
     return response.status(500).json({ error });
   }
